@@ -35,3 +35,14 @@ def init():
     arch_user = "anonymous"
     global arch_pass
     arch_pass = "anonymous@domain.com"
+
+    global debian_server
+    debian_server = "cdimage.debian.org"
+    global debian_path
+    debian_path = "/debian-cd/current/amd64/bt-cd"
+    global debian_path_arm
+    debian_path_arm = "/debian-cd/current/arm64/bt-cd"
+    global debian_user
+    debian_user = "anonymous"
+    global debian_pass
+    debian_pass = "anonymous@domain.com"
