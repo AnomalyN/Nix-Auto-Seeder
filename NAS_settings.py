@@ -16,16 +16,14 @@ def init():
     global ubuntu_pass
     ubuntu_pass = "anonymous@domain.com"
  
-    global raspian_desktop_software
-    raspian_desktop_software = "https://downloads.raspberrypi.org/raspbian_full_latest.torrent"
-    global raspian_desktop_only
-    raspian_desktop_only = "https://downloads.raspberrypi.org/raspbian_latest.torrent"
-    global raspian_lite
-    raspian_lite = "https://downloads.raspberrypi.org/raspbian_lite_latest.torrent"
-    global noobs_full
-    noobs_full = "https://downloads.raspberrypi.org/NOOBS_latest.torrent"
-    global noobs_lite
-    noobs_lite = "https://downloads.raspberrypi.org/NOOBS_lite_latest.torrent"
+    global raspian_torrents
+    raspian_torrents = [
+        "https://downloads.raspberrypi.org/raspbian_full_latest.torrent",
+        "https://downloads.raspberrypi.org/raspbian_latest.torrent",
+        "https://downloads.raspberrypi.org/raspbian_lite_latest.torrent",
+        "https://downloads.raspberrypi.org/NOOBS_latest.torrent",
+        "https://downloads.raspberrypi.org/NOOBS_lite_latest.torrent"
+    ]
 
     global arch_server
     arch_server = "ftp.mirrorservice.org" #University of Kent
