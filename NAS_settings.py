@@ -45,3 +45,12 @@ def init():
     debian_user = "anonymous"
     global debian_pass
     debian_pass = "anonymous@domain.com"
+
+    global centos_server
+    centos_server = "ftp.mirrorservice.org"
+    global centos_path
+    centos_path = "sites/mirror.centos.org/7/isos/x86_64/"
+    global centos_user
+    centos_user = "anonymous"
+    global centos_pass
+    centos_pass = "anonymous@domain.com"
