@@ -1,11 +1,12 @@
 from os.path import expanduser
+import tempfile
 
 def init():
     #Defining constants here
     
     #Default working directory. Using home since torrents are deleted after being added
     global working_path_NAS
-    working_path_NAS = expanduser("~")
+    working_path_NAS = tempfile.gettempdir()
 
     global ubuntu_server
     ubuntu_server = "ftp.mirrorservice.org" #University of Kent
