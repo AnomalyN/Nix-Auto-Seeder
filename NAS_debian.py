@@ -2,15 +2,14 @@ import ftplib
 import NAS_helper
 import os
 from time import sleep
-import NAS_settings
 
-def seed_debian():
+def seed_debian(settings):
     #amd64
     try:
-        ftp = ftplib.FTP(NAS_settings.debian_server, NAS_settings.debian_user,NAS_settings.debian_pass)
+        ftp = ftplib.FTP(settings.debian_server, settings.debian_user,settings.debian_pass)
 
         #Get debian
-        ftp.cwd(NAS_settings.debian_path)
+        ftp.cwd(settings.debian_path)
 
         #Get torrent list
         dir_raw = []
@@ -18,7 +17,7 @@ def seed_debian():
         torrents = NAS_helper.find_torrents(dir_raw)
 
         for x in range(0,len(torrents)):
-            local_filename = NAS_settings.working_path_NAS + os.sep + torrents[x] #Save it in location defined in settings.py
+            local_filename = settings.working_path_NAS + os.sep + torrents[x] #Save it in location defined in settings.py
             try:
                 lf = open(local_filename, "wb")        
                 ftp.retrbinary("RETR " + torrents[x], lf.write, 8*1024)
@@ -34,10 +33,10 @@ def seed_debian():
 
     #arm64
     try:
-        ftp = ftplib.FTP(NAS_settings.debian_server, NAS_settings.debian_user,NAS_settings.debian_pass)
+        ftp = ftplib.FTP(settings.debian_server, settings.debian_user,settings.debian_pass)
 
         #Get debian
-        ftp.cwd(NAS_settings.debian_path_arm)
+        ftp.cwd(settings.debian_path_arm)
 
         #Get torrent list
         dir_raw = []
@@ -45,7 +44,7 @@ def seed_debian():
         torrents = NAS_helper.find_torrents(dir_raw)
 
         for x in range(0,len(torrents)):
-            local_filename = NAS_settings.working_path_NAS + os.sep + torrents[x] #Save it in location defined in settings.py
+            local_filename = settings.working_path_NAS + os.sep + torrents[x] #Save it in location defined in settings.py
             try:
                 lf = open(local_filename, "wb")        
                 ftp.retrbinary("RETR " + torrents[x], lf.write, 8*1024)

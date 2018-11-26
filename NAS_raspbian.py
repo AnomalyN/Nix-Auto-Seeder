@@ -1,12 +1,10 @@
 import NAS_helper
-import NAS_settings
 import os
 from time import sleep
 
-def seed_raspbian():
-
-    for torrent in NAS_settings.raspian_torrents:
-        local_filename = NAS_settings.working_path_NAS + os.sep + torrent.split('/')[-1]
+def seed_raspbian(settings):
+    for torrent in settings.raspian_torrents:
+        local_filename = settings.working_path_NAS + os.sep + torrent.split('/')[-1]
         NAS_helper.grab_file(torrent, local_filename)
 
         print("Attempting to add: " + local_filename)

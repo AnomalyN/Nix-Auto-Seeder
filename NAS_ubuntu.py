@@ -2,14 +2,13 @@ import ftplib
 import NAS_helper
 import os
 from time import sleep
-import NAS_settings
 
-def seed_ubuntu():
+def seed_ubuntu(settings):
     try:  
-        ftp = ftplib.FTP(NAS_settings.ubuntu_server, NAS_settings.ubuntu_user,NAS_settings.ubuntu_pass)
+        ftp = ftplib.FTP(settings.ubuntu_server, settings.ubuntu_user,settings.ubuntu_pass)
 
         #Get ubuntu
-        ftp.cwd(NAS_settings.ubuntu_path)
+        ftp.cwd(settings.ubuntu_path)
     
         #Get directory listing
         dir_raw = []
@@ -27,7 +26,7 @@ def seed_ubuntu():
         torrents = NAS_helper.find_torrents(dir_raw)
 
         for x in range(0,len(torrents)):
-            local_filename = NAS_settings.working_path_NAS + os.sep + torrents[x] #Save it in location defined in settings.py
+            local_filename = settings.working_path_NAS + os.sep + torrents[x] #Save it in location defined in settings.py
             print(local_filename)
             try:
                 lf = open(local_filename, "wb")        
