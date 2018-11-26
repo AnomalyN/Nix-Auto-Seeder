@@ -6,10 +6,14 @@ import NAS_arch
 import NAS_debian
 import NAS_centos
 
-NAS_settings.init()
+def main():
+    settings = NAS_settings.create_settings()
+    NAS_ubuntu.seed_ubuntu(settings)
+    NAS_raspbian.seed_raspbian(settings)
+    NAS_arch.seed_arch(settings)
+    NAS_debian.seed_debian(settings)
+    NAS_centos.seed_centos(settings)
 
-NAS_ubuntu.seed_ubuntu()
-NAS_raspbian.seed_raspbian()
-NAS_arch.seed_arch()
-NAS_debian.seed_debian()
-NAS_centos.seed_centos()
+
+if __name__ == '__main__':
+    main()

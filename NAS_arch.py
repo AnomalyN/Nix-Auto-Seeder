@@ -2,14 +2,13 @@ import ftplib
 import NAS_helper
 import os
 from time import sleep
-import NAS_settings
 
-def seed_arch():
+def seed_arch(settings):
     try:
-        ftp = ftplib.FTP(NAS_settings.arch_server, NAS_settings.arch_user,NAS_settings.arch_pass)
+        ftp = ftplib.FTP(settings.arch_server, settings.arch_user,settings.arch_pass)
 
         #Get arch
-        ftp.cwd(NAS_settings.arch_path)
+        ftp.cwd(settings.arch_path)
 
         #Get torrent list
         dir_raw = []
@@ -17,7 +16,7 @@ def seed_arch():
         torrents = NAS_helper.find_torrents(dir_raw)
 
         for x in range(0,len(torrents)):
-            local_filename = NAS_settings.working_path_NAS + os.sep + torrents[x] #Save it in location defined in settings.py
+            local_filename = settings.working_path_NAS + os.sep + torrents[x] #Save it in location defined in settings.py
             try:
                 lf = open(local_filename, "wb")        
                 ftp.retrbinary("RETR " + torrents[x], lf.write, 8*1024)
