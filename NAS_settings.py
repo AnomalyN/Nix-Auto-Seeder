@@ -4,6 +4,7 @@ import tempfile
 
 Settings = namedtuple('Settings', [
     'working_path_NAS',
+    'output_dir_set',
     'ubuntu_server',
     'ubuntu_path',
     'ubuntu_user',
@@ -28,6 +29,7 @@ def create_settings():
     '''Populates a namedtuple with the settings defined for the rest of the program'''
     return Settings(
         working_path_NAS=tempfile.gettempdir(),
+        output_dir_set=False,
         ubuntu_server="ftp.mirrorservice.org", #University of Kent
         ubuntu_path="sites/releases.ubuntu.com/",
         ubuntu_user="anonymous",

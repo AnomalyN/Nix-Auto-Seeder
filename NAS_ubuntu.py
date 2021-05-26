@@ -34,6 +34,8 @@ def seed_ubuntu(settings):
             finally:
                 lf.close()
                 print("Attempting to add: "+local_filename)
+                if settings.output_dir_set:
+                    continue
                 os.system("deluge-console add "+local_filename)
                 sleep(1) #Give deluge some time to add it before deleting file
                 if os.path.exists(local_filename):
