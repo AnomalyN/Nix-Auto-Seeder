@@ -8,6 +8,9 @@ def seed_raspbian(settings):
         NAS_helper.grab_file(torrent, local_filename)
 
         print("Attempting to add: " + local_filename)
+        if settings.output_dir_set:
+            continue
+
         os.system("deluge-console add " + local_filename)
 
         sleep(1) #Give deluge some time to add it before deleting file
