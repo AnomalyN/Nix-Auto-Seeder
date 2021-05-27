@@ -1,3 +1,4 @@
+import sys
 import util
 import click
 import itertools
@@ -17,8 +18,13 @@ from loguru import logger
 @click.option('--skip-deluge',
               help='Skip adding the torrent files via deluge-console',
               is_flag=True)
-def main(num_releases, output_dir, skip_deluge):
+@click.option('-v', '--verbose',
+              count=True,
+              default=0)
+def main(num_releases, output_dir, skip_deluge, verbose):
     distro_files = []
+
+    util.setup_loguru(verbose)
 
     for distro in util.get_distros():
         logger.debug("Parsing {}", distro)
@@ -28,18 +34,22 @@ def main(num_releases, output_dir, skip_deluge):
     if output_dir and not output_dir.exists():
         output_dir.mkdir()
 
-    for (filename, t_file) in itertools.chain(*distro_files):
+    try:
+        for (filename, t_file) in itertools.chain(*distro_files):
 
-        # Add via deluge console, skip if requested
-        if not skip_deluge:
-            util.run_deluge(t_file)
+            # Add via deluge console, skip if requested
+            if not skip_deluge:
+                util.run_deluge(t_file)
 
-        # Store copies of torrent files in output_dir
-        if output_dir:
-            output_file = output_dir / filename
+            # Store copies of torrent files in output_dir
+            if output_dir:
+                output_file = output_dir / filename
 
-            with output_file.open('wb+') as f:
-                util.copy_file(t_file, f)
+                with output_file.open('wb+') as f:
+                    util.copy_file(t_file, f)
+
+    except Exception as e:
+        logger.exception("Failed to parse torrents {}", e)
 
 
 if __name__ == '__main__':

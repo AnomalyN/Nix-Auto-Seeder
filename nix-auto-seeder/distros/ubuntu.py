@@ -39,15 +39,16 @@ class Ubuntu(Distro):
 
             # Sort releases by version
             releases = {k: v for k, v in sorted(releases.items(), key=lambda i: i[0], reverse=True)}
-            logger.info("Found Ubuntu releases: {}", releases.keys())
+            logger.debug("Found Ubuntu releases: {}", ', '.join((releases.keys())))
 
             # if num_releases is 0, get all versions
             if num_releases:
                 releases = itertools.islice(releases.items(), num_releases)
 
             for version, path in releases:
-                print(path)
                 files = ftp.nlst(path)
+                logger.trace("[{}] {} FTP files: {}", self, path, files)
                 torrent_files += list(filter(util.verify_torrents, files))
 
+        logger.trace("[{}] FTP torrent files: {}", self, torrent_files)
         return torrent_files

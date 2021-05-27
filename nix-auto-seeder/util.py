@@ -1,4 +1,5 @@
 import imp
+import sys
 import inspect
 import tempfile
 import subprocess
@@ -45,3 +46,22 @@ def run_deluge(t_file):
 
     except Exception as e:
         logger.error("Failed to run deluge-console: {}", e)
+
+
+def setup_loguru(verbose):
+    # Based on default loguru
+    format = str(
+        "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+        "<level>{level: <8}</level> | "
+        "<level>{message}</level>",
+    )
+
+    logger.remove()
+
+    # Set logging level based on verbose level
+    if verbose == 0:
+        logger.add(sys.stderr, format=format, level="INFO", diagnose=False, backtrace=False, catch=False)
+    elif verbose == 1:
+        logger.add(sys.stderr, format=format, level="DEBUG", diagnose=False, backtrace=True)
+    elif verbose >= 2:
+        logger.add(sys.stderr, format=format, level="TRACE", diagnose=True, backtrace=True)

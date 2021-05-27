@@ -1,9 +1,11 @@
+# Python imports
 import tempfile
-
 from ftplib import FTP
 
+# External libraries
 from loguru import logger
 
+# Local imports
 import util
 
 
@@ -29,11 +31,13 @@ class Distro:
 
         for path in self.paths:
             files = ftp.nlst(path)
-            logger.debug("Identified {} files", len(files))
+            logger.debug("Identified {} files for path: {}", len(files), path)
 
             # Filter files to only list torrent files
+            logger.trace("[{}] {} FTP files: {}", self, path, files)
             torrent_files += list(filter(util.verify_torrents, files))
 
+        logger.trace("[{}] FTP torrent files: {}", self, torrent_files)
         return torrent_files
 
     def get_torrents_files(self, ftp, torrent_files):
