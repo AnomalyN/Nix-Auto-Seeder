@@ -57,3 +57,14 @@ class Distro:
     def __resp__(self):
         num_paths = len(self.pahts)
         return f"{self}: [{num_paths}]"
+
+    def __eq__(self, other):
+        name = self.__class__.__name__
+        if isinstance(other, Distro):
+            return name == other.__class__.name
+
+        elif isinstance(other, str):
+            return name.lower() == other.lower()
+
+        else:
+            return False
