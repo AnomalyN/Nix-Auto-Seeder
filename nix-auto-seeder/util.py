@@ -1,6 +1,7 @@
-import os
 import imp
 import inspect
+import tempfile
+import subprocess
 
 from pathlib import Path
 
@@ -23,8 +24,24 @@ def verify_torrents(filename):
     return filename.endswith('.torrent')
 
 
-def copy_file(output_dir, filename, t_file):
-    out_file = output_dir / filename
-    with out_file.open('wb+') as f:
-        t_file.seek(0)
-        f.write(t_file.read())
+def copy_file(f_input, f_output):
+    f_input.seek(0)  # Ensure input file is read from beginning
+    f_output.write(f_input.read())
+
+
+def run_deluge(t_file):
+    try:
+        with tempfile.NamedTemporaryFile() as tmp_file:
+
+            # Copy content of torrent file in mem to tmp file
+            copy_file(t_file, tmp_file)
+
+            subprocess.run(
+                ['deluge-console', 'add', tmp_file.name],
+                check=True
+            )
+    except subprocess.CalledProcessError as cpe:
+        logger.error("deluge-console exited with error: {}", cpe)
+
+    except Exception as e:
+        logger.error("Failed to run deluge-console: {}", e)
