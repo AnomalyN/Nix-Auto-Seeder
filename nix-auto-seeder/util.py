@@ -4,6 +4,8 @@ import inspect
 
 from pathlib import Path
 
+from loguru import logger
+
 
 def get_distros(dir='distros'):
     path = Path('.') / dir

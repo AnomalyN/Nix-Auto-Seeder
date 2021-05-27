@@ -2,6 +2,8 @@ import util
 
 from ftplib import FTP
 
+from loguru import logger
+
 
 class Distro:
 

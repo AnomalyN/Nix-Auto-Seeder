@@ -3,6 +3,8 @@ import util
 import inspect
 import click
 
+from loguru import logger
+
 
 @click.command()
 @click.option('-o', '--output-dir',
