@@ -18,15 +18,24 @@ from loguru import logger
 @click.option('--skip-deluge',
               help='Skip adding the torrent files via deluge-console',
               is_flag=True)
+@click.option('-l', '--limit',
+              multiple=True,
+              help='Limit downloading torrent for specific distros')
 @click.option('-v', '--verbose',
               count=True,
               default=0)
-def main(num_releases, output_dir, skip_deluge, verbose):
+def main(num_releases, output_dir, skip_deluge, limit, verbose):
     distro_files = []
 
     util.setup_loguru(verbose)
 
     for distro in util.get_distros():
+
+        # If limit is given, only parse distros who are equal to argument given
+        if limit:
+            if not any(limit_distro == distro for limit_distro in limit):
+                continue
+
         logger.debug("Parsing {}", distro)
         distro_files.append(distro.get_torrents(num_releases=num_releases))
 
