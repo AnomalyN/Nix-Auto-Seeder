@@ -21,3 +21,10 @@ def get_distros(dir='distros'):
 
 def verify_torrents(filename):
     return filename.endswith('.torrent')
+
+
+def copy_file(output_dir, filename, t_file):
+    out_file = output_dir / filename
+    with out_file.open('wb+') as f:
+        t_file.seek(0)
+        f.write(t_file.read())
