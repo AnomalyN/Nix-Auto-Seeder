@@ -11,7 +11,10 @@ from loguru import logger
 @click.option('-o', '--output-dir',
               help='Save torrents in dir instead of submitting to deluge',
               type=click.Path(file_okay=False, writable=True, path_type=Path))
-def main(output_dir):
+@click.option('--skip-deluge',
+              help='Skip adding the torrent files via deluge-console',
+              is_flag=True)
+def main(output_dir, skip_deluge):
     distro_files = []
 
     for distro in util.get_distros():
@@ -24,9 +27,16 @@ def main(output_dir):
 
     for (filename, t_file) in itertools.chain(*distro_files):
 
+        # Add via deluge console, skip if requested
+        if not skip_deluge:
+            util.run_deluge(t_file)
+
         # Store copies of torrent files in output_dir
         if output_dir:
-            util.copy_file(output_dir, filename, t_file)
+            output_file = output_dir / filename
+
+            with output_file.open('wb+') as f:
+                util.copy_file(t_file, f)
 
 
 if __name__ == '__main__':
