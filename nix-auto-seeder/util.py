@@ -17,3 +17,7 @@ def get_distros(dir='distros'):
         for mem_name, obj in inspect.getmembers(module):
             if inspect.isclass(obj) and inspect.getmodule(obj) is module:
                 yield obj()
+
+
+def verify_torrents(filename):
+    return filename.endswith('.torrent')
