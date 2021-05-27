@@ -8,18 +8,21 @@ from loguru import logger
 
 
 @click.command()
+@click.option('-n', '--num-releases',
+              help='If multiple versions are available download the latest num; 0 to get all releases',
+              default=1)
 @click.option('-o', '--output-dir',
               help='Save torrents in dir instead of submitting to deluge',
               type=click.Path(file_okay=False, writable=True, path_type=Path))
 @click.option('--skip-deluge',
               help='Skip adding the torrent files via deluge-console',
               is_flag=True)
-def main(output_dir, skip_deluge):
+def main(num_releases, output_dir, skip_deluge):
     distro_files = []
 
     for distro in util.get_distros():
-        logger.info("Parsing {}", distro)
-        distro_files.append(distro.get_torrents())
+        logger.debug("Parsing {}", distro)
+        distro_files.append(distro.get_torrents(num_releases=num_releases))
 
     # Ensure output dir exists if defined
     if output_dir and not output_dir.exists():
