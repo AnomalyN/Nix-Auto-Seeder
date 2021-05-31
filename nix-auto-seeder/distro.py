@@ -28,7 +28,6 @@ class Distro:
 
             torrent_file_paths = self.gather_torrent_paths(path)
             self.logger.debug("Path contains: {}\n{}", path, torrent_file_paths)
-            self.logger.info("Identified {} torrent files in path: {}", len(torrent_file_paths), path)
 
             torrent_file_paths = self.filter_torrents(torrent_file_paths, **kwargs)
             torrent_files = [self._download(path) for path in torrent_file_paths]
@@ -49,36 +48,39 @@ class Distro:
         dic = dict()
 
         # Generate dict for sorting
+        # e.g. { "18.04": {".5": [TorrentPath(major=18.04, minor=.5, path=full.iso), ...] }}
         for torrent_path in paths:
             major_version = torrent_path.major
+            minor_version = torrent_path.minor
 
             # Remove any architecures from dict which are unwanted
             if arch and torrent_path.arch not in arch:
                 continue
 
             if major_version not in dic:
-                dic[major_version] = list()
+                dic[major_version] = dict()
 
-            dic[major_version].append(torrent_path)
+            if minor_version not in dic[major_version]:
+                dic[major_version][minor_version] = list()
+
+            dic[major_version][minor_version].append(torrent_path)
 
         major_lst = sorted(list(dic.keys()), reverse=True)
 
         # Create subset of major_lst, based on user input
         if major:
-            print(major)
             major_lst = major_lst[:major]
 
         for key in major_lst:
-            paths = dic[key]
+            minor_lst = sorted(list(dic[key].keys()), reverse=True)
 
             # Sort TorrentPaths based on minor version
-            paths = sorted(paths, reverse=True)
-
             if minor:
-                paths = paths[:minor]
+                minor_lst = minor_lst[:minor]
 
-            for entry in paths:
-                yield entry
+            for key2 in minor_lst:
+                for entry in dic[key][key2]:
+                    yield entry
 
     def gather_torrent_paths(self, path):
         """ Get all torrent file paths
@@ -95,13 +97,12 @@ class Distro:
             else:
                 return TorrentPath(path=path)
 
-        elif isinstance(path, dict):
+        elif isinstance(path, list):
 
             paths = []
             path_iter = iter(path)
 
-            cur_path = next(path_iter)
-            cur_regex = path[cur_path]
+            (cur_path, cur_regex) = next(path_iter)
 
             cur_obj = TorrentPath(path=cur_path)
             files = self._list(cur_obj.path)
@@ -111,7 +112,7 @@ class Distro:
 
             try:
                 while cur_path := next(path_iter):
-                    cur_regex = path[cur_path]
+                    cur_path, cur_regex = cur_path
                     self.logger.trace("Parsing subdir: {}", cur_path)
 
                     new_paths = []
@@ -123,6 +124,7 @@ class Distro:
                         new_paths += p.extend(files, cur_regex)
 
                     paths = new_paths
+                    self.logger.trace(paths)
 
             except StopIteration:
                 pass
