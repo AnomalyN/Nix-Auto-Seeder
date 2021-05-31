@@ -1,13 +1,16 @@
-from distro import Distro
+from distro import FTPDistro
 
 
-class Debian(Distro):
+class Debian(FTPDistro):
 
     def __init__(self):
         super().__init__(
-            server='cdimage.debian.org',
+            server='ftp.mirrorservice.org',
             paths=[
-                '/debian-cd/current/amd64/bt-cd',
-                '/debian-cd/current/arm64/bt-cd'
+                [
+                    ('/sites/cdimage.debian.org/debian-cd/', r'(?P<major>\d+)\.(?P<minor>\d+[\.\d]*)'),
+                    ('.', r'(?P<arch>\w+)'),
+                    ('.', r'bt')
+                ]
             ]
         )

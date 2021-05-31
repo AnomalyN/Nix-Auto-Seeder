@@ -7,9 +7,9 @@ class Ubuntu(FTPDistro):
         super().__init__(
             server='ftp.mirrorservice.org',
             paths=[
-                {
-                    'sites/releases.ubuntu.com/': r'(?P<major>\d+\.\d+)\.(?P<minor>\d+)?',
-                    '.': r'(?P<arch>\w+)\.iso\.torrent'
-                }
+                [
+                    ('sites/releases.ubuntu.com/', r'(?P<major>\d+\.\d+)\.(?P<minor>\d+)?'),
+                    ('.', r'(?P<arch>\w+)\.iso\.torrent')
+                ]
             ]
         )

@@ -8,9 +8,9 @@ class CentOS(FTPDistro):
             server='ftp.mirrorservice.org',
             paths=
             [
-                {
-                    '/sites/mirror.centos.org/': r'(?P<major>\d+)\.(?P<minor>\d+[\.\d]*)',
-                    '/isos/': r'(?P<arch>\w+)'
-                },
+                [
+                    ('/sites/mirror.centos.org/', r'(?P<major>\d+)\.(?P<minor>\d+[\.\d]*)'),
+                    ('/isos/', r'(?P<arch>\w+)')
+                ],
             ]
         )

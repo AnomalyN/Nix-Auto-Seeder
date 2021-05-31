@@ -1,7 +1,7 @@
-from distro import Distro
+from distro import FTPDistro
 
 
-class Arch(Distro):
+class Arch(FTPDistro):
 
     def __init__(self):
         super().__init__(
